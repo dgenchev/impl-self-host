@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Genchev - Dental Implants Specialist</title>
+    <meta name="description" content="Dr. Genchev specializes in immediate loading implants and basal implantology. Advanced dental implant solutions with faster recovery times.">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <h1>Dr. Genchev</h1>
+                    <p>Dental Implants Specialist</p>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Advanced Dental Implant Solutions</h1>
+                <p>Specializing in immediate loading implants and basal implantology for faster recovery and immediate functionality.</p>
+                <a href="#contact" class="cta-button">Schedule Consultation</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Immediate Loading Implants</h3>
+                    <p>Get your dental implants and temporary crowns in a single visit, allowing for immediate functionality and faster recovery.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Basal Implantology</h3>
+                    <p>Advanced implant techniques for patients with limited bone structure, providing stable and long-lasting results.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Consultation & Planning</h3>
+                    <p>Comprehensive evaluation and personalized treatment planning to ensure the best possible outcomes for your dental health.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <h2>About Dr. Genchev</h2>
+                <p>Dr. Genchev is a highly skilled dental specialist with extensive experience in immediate loading implants and basal implantology. Our practice focuses on providing patients with advanced dental implant solutions that offer faster recovery times and immediate functionality.</p>
+                <p>We use cutting-edge techniques and technology to ensure the highest quality care and optimal results for every patient.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Assistant Section -->
+    <section class="ai-assistant">
+        <div class="container">
+            <h2>Ask Our AI Assistant</h2>
+            <p>Have questions about dental implants? Our AI assistant can help answer your questions about procedures, recovery, and more.</p>
+            
+            <div class="chat-container">
+                <div id="chatHistory" class="chat-history">
+                    <div class="message ai-message">
+                        <div class="message-header">
+                            <span class="sender">AI Assistant</span>
+                            <span class="timestamp" id="welcomeTime"></span>
+                        </div>
+                        <div class="message-content">
+                            Hello! I'm Dr. Genchev's AI dental assistant. I specialize in immediate loading implants and basal implantology. How can I help you today?
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="questionInput" placeholder="Type your question here..." maxlength="500">
+                    <button id="sendButton" class="send-button">Send</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>Ready to start your journey to a better smile? Contact us today to schedule your consultation.</p>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    <p>We're here to help you achieve the smile you deserve. Contact us for a consultation or to learn more about our services.</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <strong>Phone:</strong>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                        <div class="contact-item">
+                            <strong>Email:</strong>
+                            <p>info@dentalimplantsgenchev.com</p>
+                        </div>
+                        <div class="contact-item">
+                            <strong>Hours:</strong>
+                            <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="contact" />
+                        <p class="hidden">
+                            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
+                        
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Tell us about your dental implant needs..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-button">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Dr. Genchev</h3>
+                    <p>Advanced dental implant solutions for a better smile.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li>Immediate Loading Implants</li>
+                        <li>Basal Implantology</li>
+                        <li>Dental Consultations</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>+1 (555) 123-4567</p>
+                    <p>info@dentalimplantsgenchev.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Dr. Genchev. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html> 
