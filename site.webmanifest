@@ -1,0 +1,21 @@
+{
+    "name": "Dr Genchev - Dental Implants",
+    "short_name": "Dr Genchev",
+    "description": "Strategic Dental Implantology in Plovdiv, Bulgaria",
+    "icons": [
+        {
+            "src": "images/logo/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "images/logo/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#E0F2E0",
+    "background_color": "#E0F2E0",
+    "display": "standalone",
+    "start_url": "/"
+} 

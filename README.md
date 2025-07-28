@@ -1,200 +1,199 @@
-# Dr. Genchev Dental Practice Website
+# Dr Genchev Dental Implants Website
 
-A modern, responsive website for Dr. Genchev's dental practice, featuring an AI assistant chat interface and contact form.
+A modern, responsive website for Dr. Genchev's dental implantology clinic, featuring immediate loading dental implants and strategic dental implantology services.
+
+## 🌟 Features
+
+- **Responsive Design**: Optimized for all devices (desktop, tablet, mobile)
+- **Modern UI**: Clean, professional design with light green theme
+- **Interactive Elements**: Smooth scrolling, form handling, animations
+- **SEO Optimized**: Proper meta tags and semantic HTML
+- **Contact Forms**: Integrated contact and AI dentist forms
+- **Testimonials**: Patient testimonials section
+- **FAQ Section**: Comprehensive information about dental implants
+- **Procedure Timeline**: Clear 5-day treatment process
+
+## 📁 Project Structure
+
+```
+dr-genchev-website/
+├── index.html          # Main HTML file
+├── css/
+│   └── style.css       # Main stylesheet
+├── js/
+│   └── script.js       # JavaScript functionality
+├── deploy.sh           # Deployment script
+└── README.md          # This file
+```
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- GitHub account
-- Netlify account (free)
+- Node.js (for development)
+- Git
+- Netlify account (for deployment)
 
-### Deployment Steps
+### Local Development
 
-#### 1. Create GitHub Repository
-1. Go to [GitHub](https://github.com) and create a new repository
-2. Name it something like `dr-genchev-website`
-3. Make it public (required for free hosting)
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd dr-genchev-website
+   ```
 
-#### 2. Upload Files to GitHub
-```bash
-# Clone your new repository
-git clone https://github.com/yourusername/dr-genchev-website.git
-cd dr-genchev-website
+2. **Install dependencies** (if any)
+   ```bash
+   npm install
+   ```
 
-# Copy all the website files to this directory
-# (index.html, css/style.css, js/script.js)
+3. **Open in browser**
+   ```bash
+   # Using Python (if available)
+   python -m http.server 8000
+   
+   # Or using Node.js
+   npx serve .
+   
+   # Or simply open index.html in your browser
+   ```
 
-# Add files to git
-git add .
-git commit -m "Initial website setup"
-git push origin main
-```
+4. **View the website**
+   - Open `http://localhost:8000` in your browser
 
-#### 3. Deploy to Netlify
-1. Go to [Netlify](https://netlify.com) and sign up/login
-2. Click "New site from Git"
-3. Choose GitHub and select your repository
-4. Click "Deploy site"
-
-#### 4. Configure Custom Domain (Optional)
-1. In Netlify dashboard, go to "Domain settings"
-2. Click "Add custom domain"
-3. Enter your domain (e.g., `dentalimplantsgenchev.com`)
-4. Follow the DNS configuration instructions
-
-## 📁 File Structure
-```
-dr-genchev-website/
-├── index.html          # Main website page
-├── css/
-│   └── style.css       # Styles and responsive design
-├── js/
-│   └── script.js       # Chat functionality and interactions
-└── README.md           # This file
-```
-
-## 🎯 Features
-
-### ✅ What's Included
-- **Responsive Design** - Works on all devices
-- **Modern UI** - Professional, clean design
-- **Contact Form** - Netlify Forms integration
-- **AI Chat Interface** - Interactive Q&A system
-- **SEO Optimized** - Meta tags and structured content
-- **Fast Loading** - Optimized for performance
-
-### 📧 Contact Form
-The contact form uses Netlify Forms and will automatically:
-- Send email notifications to your email
-- Store submissions in Netlify dashboard
-- Include spam protection (honeypot)
-- Work without any backend setup
-
-### 🤖 AI Chat Assistant
-The chat interface includes:
-- Real-time messaging
-- Typing indicators
-- Message history
-- Responsive design
-- Mock AI responses (can be connected to real AI backend)
-
-## 🔧 Customization
-
-### Update Contact Information
-Edit `index.html` and update:
-- Phone number
-- Email address
-- Office hours
-- Address (if needed)
-
-### Change Colors
-Edit `css/style.css` and modify the CSS variables:
-```css
-:root {
-    --primary-color: #2563eb;
-    --secondary-color: #1d4ed8;
-    --text-color: #333;
-    --background-color: #fff;
-}
-```
-
-### Connect Real AI Backend
-Replace the mock AI function in `js/script.js`:
-```javascript
-// Replace this function with your actual AI API call
-async function getAIResponse(question) {
-    const response = await fetch('/api/ai-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question })
-    });
-    return await response.json();
-}
-```
-
-## 📊 Performance
-
-### Lighthouse Scores
-- **Performance**: 95+
-- **Accessibility**: 95+
-- **Best Practices**: 95+
-- **SEO**: 95+
-
-### Loading Speed
-- **First Contentful Paint**: < 1.5s
-- **Largest Contentful Paint**: < 2.5s
-- **Cumulative Layout Shift**: < 0.1
-
-## 🔒 Security
-
-### Built-in Protection
-- **HTTPS** - Automatic SSL certificates
-- **Spam Protection** - Netlify Forms honeypot
-- **XSS Protection** - Input sanitization
-- **CSRF Protection** - Form security
-
-## 📱 Mobile Optimization
-
-### Responsive Features
-- **Mobile-first design**
-- **Touch-friendly interface**
-- **Optimized images**
-- **Fast mobile loading**
-
-## 🎨 Design System
+## 🎨 Customization
 
 ### Colors
-- **Primary**: Blue (#2563eb)
-- **Secondary**: Dark Blue (#1d4ed8)
-- **Text**: Dark Gray (#333)
-- **Background**: White (#fff)
+The website uses a consistent color palette:
+- **Primary Background**: `#E0F2E0` (Light green)
+- **Text**: `#2D3748` (Dark gray)
+- **Secondary Text**: `#4A5568` (Medium gray)
+- **Accent**: `#25D366` (WhatsApp green)
 
 ### Typography
-- **Font**: Inter (Google Fonts)
-- **Weights**: 300, 400, 500, 600, 700
-- **Responsive**: Scales with screen size
+- **Headings**: Playfair Display (serif)
+- **Body Text**: Inter (sans-serif)
 
-## 🚀 Deployment Benefits
+### Content Sections
+1. **Hero Section**: Main title and tagline
+2. **Key Features**: NO WAIT, FIXED PRICE, 5 DAYS
+3. **About Dr Genchev**: Professional introduction
+4. **Certifications**: Credentials and media
+5. **FAQ**: Common questions and answers
+6. **AI Dentist**: Interactive question form
+7. **Testimonials**: Patient reviews
+8. **Procedure**: 5-day treatment timeline
+9. **Contact**: Contact form and information
 
-### Cost Savings
-- **$0/month** hosting (vs $16-25+/month on Wix)
-- **No hidden fees**
-- **No price increases**
+## 📧 Forms
 
-### Performance
-- **Global CDN** - Fast loading worldwide
-- **Automatic optimization**
-- **Better SEO** - Static site benefits
+### Contact Form
+The contact form includes:
+- First Name
+- Last Name
+- Email
+- Phone
+- Type of service
+- Other (textarea)
+- reCAPTCHA placeholder
 
-### Control
-- **Full code control**
-- **Custom domains**
-- **No platform lock-in**
+### AI Dentist Form
+Simple question submission form for AI-powered dental advice.
 
-## 📞 Support
+## 🔧 Configuration
 
-### Need Help?
-1. **Check Netlify docs** - [docs.netlify.com](https://docs.netlify.com)
-2. **GitHub issues** - Create an issue in your repo
-3. **Community** - Netlify community forums
+### Netlify Forms
+The forms are configured for Netlify:
+- Contact form: `name="contact"`
+- AI form: Integrated with JavaScript handling
 
-### Common Issues
-- **Form not working** - Check Netlify Forms settings
-- **Domain not working** - Verify DNS settings
-- **Images not loading** - Check file paths
+### WhatsApp Integration
+Update the phone number in `js/script.js`:
+```javascript
+const phoneNumber = '+35932266089'; // Replace with actual number
+```
 
-## 🔄 Updates
+### Language Support
+The language selector supports:
+- EN (English)
+- BG (Bulgarian)
+- RU (Russian)
 
-### How to Update
-1. Edit files locally
-2. Commit and push to GitHub
-3. Netlify automatically deploys changes
+## 🚀 Deployment
 
-### Version Control
-- All changes tracked in Git
-- Easy rollback if needed
-- Collaboration friendly
+### Netlify Deployment
+
+1. **Connect to Netlify**
+   - Push your code to GitHub
+   - Connect your repository to Netlify
+   - Deploy automatically
+
+2. **Manual Deployment**
+   ```bash
+   # Build and deploy
+   ./deploy.sh
+   ```
+
+3. **Custom Domain** (Optional)
+   - Configure custom domain in Netlify dashboard
+   - Update DNS settings
+
+### Environment Variables
+Set these in Netlify dashboard if needed:
+- `CONTACT_EMAIL`: Email for form submissions
+- `WHATSAPP_NUMBER`: WhatsApp business number
+
+## 📱 Responsive Design
+
+The website is fully responsive with breakpoints:
+- **Desktop**: 1200px+
+- **Tablet**: 768px - 1199px
+- **Mobile**: < 768px
+
+## 🎯 SEO Features
+
+- Semantic HTML structure
+- Meta tags for description and keywords
+- Open Graph tags (can be added)
+- Structured data (can be added)
+- Fast loading times
+- Mobile-friendly design
+
+## 🔍 Performance
+
+- Optimized images (placeholder system)
+- Minified CSS and JS
+- Fast loading times
+- Smooth animations
+- Progressive enhancement
+
+## 🛠️ Development
+
+### Adding New Sections
+1. Add HTML structure in `index.html`
+2. Add CSS styles in `css/style.css`
+3. Add JavaScript functionality in `js/script.js`
+
+### Styling Guidelines
+- Use CSS Grid and Flexbox for layouts
+- Maintain consistent spacing (rem units)
+- Follow the established color palette
+- Ensure accessibility standards
+
+## 📞 Contact Information
+
+**Dr Genchev Dental Implantology Clinic**
+- **Phone**: +359 32 266 089
+- **Email**: genchevi@dr-genchevi.com
+- **Location**: Plovdiv, Bulgaria
+
+## 📄 License
+
+This project is for Dr. Genchev's dental clinic. All rights reserved.
+
+## 🤝 Contributing
+
+For website updates and improvements, please contact the development team.
 
 ---
 
-**Ready to deploy?** Follow the steps above and you'll have a professional, fast, and cost-effective website in minutes!
+**Built with ❤️ for Dr. Genchev's Dental Implantology Clinic**
