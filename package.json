@@ -1,0 +1,25 @@
+{
+  "name": "dr-genchev-website",
+  "version": "1.0.0",
+  "description": "Dr Genchev Dental Implants Website",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build step required for static site'",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "keywords": [
+    "dental",
+    "implants",
+    "netlify",
+    "static-site"
+  ],
+  "author": "Dr Genchev",
+  "license": "MIT"
+} 

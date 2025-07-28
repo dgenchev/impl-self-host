@@ -175,39 +175,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         function getAIResponse(question) {
-            const lowerQuestion = question.toLowerCase();
+            // Show typing indicator while waiting for API response
+            showTypingIndicator();
             
-            // Predefined responses based on keywords
-            if (lowerQuestion.includes('implant') && lowerQuestion.includes('cost') || lowerQuestion.includes('price')) {
-                return "The cost of dental implants varies depending on your specific needs. Our immediate loading implants typically range from €800-1500 per implant. We offer fixed pricing with no hidden costs. Would you like to schedule a consultation for a personalized quote?";
-            }
-            
-            if (lowerQuestion.includes('immediate') && lowerQuestion.includes('loading')) {
-                return "Immediate loading implants allow you to receive your new teeth in just 5 days! Unlike traditional implants that require 3-6 months of healing, our strategic implantology technique uses the cortical bone for immediate stability. This means faster recovery and no long waiting periods.";
-            }
-            
-            if (lowerQuestion.includes('pain') || lowerQuestion.includes('hurt')) {
-                return "Most patients report minimal discomfort during and after the procedure. We use advanced techniques and local anesthesia to ensure your comfort. The immediate loading process is designed to be less painful than traditional implant methods, with most patients returning to normal activities within days.";
-            }
-            
-            if (lowerQuestion.includes('recovery') || lowerQuestion.includes('heal')) {
-                return "With immediate loading implants, recovery is much faster than traditional methods. Most patients can return to normal eating and speaking within 24-48 hours. The entire process from consultation to final teeth takes just 5 days, compared to 3-6 months with conventional implants.";
-            }
-            
-            if (lowerQuestion.includes('bone') && lowerQuestion.includes('loss')) {
-                return "Our strategic implantology technique is specifically designed for patients with bone loss. We use the cortical bone, which is more stable and doesn't require bone grafting or sinus lifts. This makes the procedure suitable for many patients who were previously told they couldn't have implants.";
-            }
-            
-            if (lowerQuestion.includes('consultation') || lowerQuestion.includes('appointment')) {
-                return "You can schedule a consultation by calling us at +359 32 266 089, emailing genchevi@dr-genchevi.com, or using the contact form on this website. We'll review your case and provide a personalized treatment plan with fixed pricing.";
-            }
-            
-            if (lowerQuestion.includes('experience') || lowerQuestion.includes('years')) {
-                return "Dr. Genchev has over 30 years of experience in dental implantology and is a certified Clinical Master of the International Implant Foundation. He specializes in immediate loading techniques and has successfully treated thousands of patients with excellent results.";
-            }
-            
-            // Default response
-            return "Thank you for your question about dental implants! Dr. Genchev specializes in immediate loading implants that provide faster recovery and immediate functionality. For specific information about your case, I'd recommend scheduling a consultation. You can contact us at +359 32 266 089 or use the contact form on this website.";
+            // Call OpenAI API via Netlify function
+            fetch('/.netlify/functions/ai-chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: question
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideTypingIndicator();
+                if (data.error) {
+                    addMessage('ai', 'Sorry, I encountered an error. Please try again or contact us directly at +359 32 266 089.');
+                } else {
+                    addMessage('ai', data.response);
+                }
+                sendButton.disabled = false;
+            })
+            .catch(error => {
+                hideTypingIndicator();
+                addMessage('ai', 'Sorry, I\'m having trouble connecting right now. Please contact us directly at +359 32 266 089 for immediate assistance.');
+                sendButton.disabled = false;
+                console.error('Error:', error);
+            });
         }
     }
 
