@@ -268,37 +268,44 @@ document.addEventListener('DOMContentLoaded', function() {
     const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach(item => {
         const title = item.querySelector('h3');
-        const content = item.querySelector('p, ol, .process-steps');
+        // Get all content elements (p, ol, .process-steps) that should be collapsible
+        const contentElements = item.querySelectorAll('p, ol, .process-steps');
         
-        if (title && content) {
+        if (title && contentElements.length > 0) {
             title.style.cursor = 'pointer';
             title.addEventListener('click', function() {
-                const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+                const isExpanded = contentElements[0].style.maxHeight && contentElements[0].style.maxHeight !== '0px';
                 
                 // Close all other items
                 faqItems.forEach(otherItem => {
-                    const otherContent = otherItem.querySelector('p, ol, .process-steps');
-                    if (otherContent) {
-                        otherContent.style.maxHeight = '0px';
-                        otherContent.style.overflow = 'hidden';
-                        otherContent.style.transition = 'max-height 0.3s ease';
-                    }
+                    const otherContentElements = otherItem.querySelectorAll('p, ol, .process-steps');
+                    otherContentElements.forEach(content => {
+                        content.style.maxHeight = '0px';
+                        content.style.overflow = 'hidden';
+                        content.style.transition = 'max-height 0.3s ease';
+                    });
                 });
                 
                 // Toggle current item
                 if (isExpanded) {
-                    content.style.maxHeight = '0px';
-                    content.style.overflow = 'hidden';
+                    contentElements.forEach(content => {
+                        content.style.maxHeight = '0px';
+                        content.style.overflow = 'hidden';
+                    });
                 } else {
-                    content.style.maxHeight = content.scrollHeight + 'px';
-                    content.style.overflow = 'visible';
+                    contentElements.forEach(content => {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        content.style.overflow = 'visible';
+                    });
                 }
             });
             
             // Initialize collapsed state
-            content.style.maxHeight = '0px';
-            content.style.overflow = 'hidden';
-            content.style.transition = 'max-height 0.3s ease';
+            contentElements.forEach(content => {
+                content.style.maxHeight = '0px';
+                content.style.overflow = 'hidden';
+                content.style.transition = 'max-height 0.3s ease';
+            });
         }
     });
 
