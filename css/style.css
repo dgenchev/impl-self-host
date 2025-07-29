@@ -335,8 +335,8 @@ body {
 
 .process-steps {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
     margin-top: 2rem;
 }
 
@@ -883,7 +883,8 @@ body {
     
     .process-steps,
     .procedure-timeline {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
     
     .testimonials-grid {
@@ -976,6 +977,11 @@ body {
     
     .input-wrapper {
         padding: 0.25rem;
+    }
+    
+    .process-steps {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
     
     #chatInput {
