@@ -681,7 +681,7 @@ body {
 
 .procedure-timeline {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
     max-width: 1000px;
     margin: 0 auto;
@@ -865,7 +865,7 @@ body {
     
     .process-steps,
     .procedure-timeline {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
     
@@ -962,6 +962,11 @@ body {
     }
     
     .process-steps {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .procedure-timeline {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
