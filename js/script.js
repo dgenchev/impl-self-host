@@ -264,48 +264,12 @@ document.addEventListener('DOMContentLoaded', function() {
         itemObserver.observe(item);
     });
 
-    // FAQ items expand/collapse functionality
+    // FAQ items - all content visible by default (no accordion)
     const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach(item => {
         const title = item.querySelector('h3');
-        // Get all content elements (p, ol, .process-steps) that should be collapsible
-        const contentElements = item.querySelectorAll('p, ol, .process-steps');
-        
-        if (title && contentElements.length > 0) {
-            title.style.cursor = 'pointer';
-            title.addEventListener('click', function() {
-                const isExpanded = contentElements[0].style.maxHeight && contentElements[0].style.maxHeight !== '0px';
-                
-                // Close all other items
-                faqItems.forEach(otherItem => {
-                    const otherContentElements = otherItem.querySelectorAll('p, ol, .process-steps');
-                    otherContentElements.forEach(content => {
-                        content.style.maxHeight = '0px';
-                        content.style.overflow = 'hidden';
-                        content.style.transition = 'max-height 0.3s ease';
-                    });
-                });
-                
-                // Toggle current item
-                if (isExpanded) {
-                    contentElements.forEach(content => {
-                        content.style.maxHeight = '0px';
-                        content.style.overflow = 'hidden';
-                    });
-                } else {
-                    contentElements.forEach(content => {
-                        content.style.maxHeight = content.scrollHeight + 'px';
-                        content.style.overflow = 'visible';
-                    });
-                }
-            });
-            
-            // Initialize collapsed state
-            contentElements.forEach(content => {
-                content.style.maxHeight = '0px';
-                content.style.overflow = 'hidden';
-                content.style.transition = 'max-height 0.3s ease';
-            });
+        if (title) {
+            title.style.cursor = 'default';
         }
     });
 
