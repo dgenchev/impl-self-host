@@ -548,11 +548,49 @@ body {
     margin: 0 auto;
 }
 
+/* Contact Form Styles */
 .contact-form {
     background: white;
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2D3748;
+    font-family: 'Inter', sans-serif;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    background: #F7FAFC;
+    line-height: 1.5;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4A5568;
+    background: white;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
 }
 
 .form-group select {
@@ -561,9 +599,11 @@ body {
     border: 1px solid #E2E8F0;
     border-radius: 8px;
     font-size: 1rem;
-    font-family: inherit;
+    font-family: 'Inter', sans-serif;
     background: #F7FAFC;
     cursor: pointer;
+    height: auto;
+    line-height: 1.5;
 }
 
 .form-group select:focus {
@@ -1100,6 +1140,7 @@ body {
 
 .help-text p {
     margin: 0.5rem 0;
+    text-align: left;
 }
 
 .help-text p:first-child {
@@ -1111,6 +1152,7 @@ body {
 .help-text ol {
     margin: 0.5rem 0;
     padding-left: 1.5rem;
+    text-align: left;
 }
 
 .help-text li {
@@ -1118,32 +1160,7 @@ body {
     line-height: 1.4;
 }
 
-.help-text em {
-    font-style: italic;
-    color: #718096;
-}
-
-/* Large files section styling */
-.form-group:has(#large-files) {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #E2E8F0;
-}
-
-.form-group:has(#large-files) label {
-    color: #2D3748;
-    font-weight: 600;
-}
-
-.form-group:has(#large-files) textarea {
-    border: 2px solid #E2E8F0;
-    transition: border-color 0.3s ease;
-}
-
-.form-group:has(#large-files) textarea:focus {
-    border-color: #4A5568;
-    box-shadow: 0 0 0 3px rgba(74, 85, 104, 0.1);
-} 
+ 
 
 /* Alternative Contact Section */
 .alternative-contact {
