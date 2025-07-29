@@ -379,13 +379,33 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="attachments">Attachments (Optional)</label>
+                            <label for="attachments">Small Files (Photos, Documents)</label>
                             <div class="file-upload-container">
                                 <input type="file" id="attachments" name="attachments" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="file-input">
                                 <div class="file-upload-info">
-                                    <p>You can upload X-rays, photos, or documents (max 8MB total)</p>
+                                    <p>Upload photos, documents, or small X-rays (max 8MB total)</p>
                                     <p>Accepted formats: JPG, PNG, PDF, DOC, DOCX</p>
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="large-files">Large Files (X-rays, Tomography)</label>
+                            <textarea 
+                                id="large-files" 
+                                name="large-files" 
+                                rows="4" 
+                                placeholder="For large X-rays, tomography disks, or multiple high-resolution images, please upload to Google Drive, Dropbox, or OneDrive and paste the download link here."
+                            ></textarea>
+                            <div class="help-text">
+                                <p><strong>Instructions for large files:</strong></p>
+                                <ol>
+                                    <li>Upload your X-rays/tomography to Google Drive, Dropbox, or OneDrive</li>
+                                    <li>Right-click the file/folder → "Share" → "Copy link"</li>
+                                    <li>Make sure the link allows "Anyone with the link can view"</li>
+                                    <li>Paste the link above</li>
+                                </ol>
+                                <p><em>This allows us to receive files of any size without restrictions.</em></p>
                             </div>
                         </div>
                         
@@ -397,6 +417,14 @@
                         
                         <button type="submit" class="submit-btn">Send Message</button>
                     </form>
+                    
+                    <div class="alternative-contact">
+                        <p><strong>Need to send large files immediately?</strong></p>
+                        <a href="https://wa.me/+35932266089?text=Hello! I would like to send you some dental X-rays or tomography files." class="whatsapp-btn" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                            Send via WhatsApp
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
