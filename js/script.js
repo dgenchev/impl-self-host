@@ -314,4 +314,131 @@ document.addEventListener('DOMContentLoaded', function() {
             this.textContent = languages[nextIndex];
         });
     }
+
+    // File Upload Enhancement
+    const fileInput = document.getElementById('attachments');
+    const fileContainer = document.querySelector('.file-upload-container');
+    
+    if (fileInput && fileContainer) {
+        // Drag and drop functionality
+        fileContainer.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        });
+        
+        fileContainer.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+        });
+        
+        fileContainer.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileSelection(files);
+            }
+        });
+        
+        // File input change handler
+        fileInput.addEventListener('change', function(e) {
+            handleFileSelection(e.target.files);
+        });
+        
+        function handleFileSelection(files) {
+            const maxSize = 8 * 1024 * 1024; // 8MB
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            
+            let totalSize = 0;
+            let validFiles = [];
+            
+            // Validate files
+            for (let file of files) {
+                if (!allowedTypes.includes(file.type)) {
+                    alert(`File "${file.name}" is not a supported format. Please use JPG, PNG, PDF, DOC, or DOCX files.`);
+                    continue;
+                }
+                
+                totalSize += file.size;
+                if (totalSize > maxSize) {
+                    alert(`Total file size exceeds 8MB limit. Please select smaller files.`);
+                    return;
+                }
+                
+                validFiles.push(file);
+            }
+            
+            // Update container state
+            if (validFiles.length > 0) {
+                fileContainer.classList.add('has-files');
+                displayFileList(validFiles);
+            } else {
+                fileContainer.classList.remove('has-files');
+                removeFileList();
+            }
+        }
+        
+        function displayFileList(files) {
+            removeFileList();
+            
+            const fileList = document.createElement('div');
+            fileList.className = 'file-list';
+            
+            files.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                
+                const fileName = document.createElement('span');
+                fileName.className = 'file-name';
+                fileName.textContent = file.name;
+                
+                const fileSize = document.createElement('span');
+                fileSize.className = 'file-size';
+                fileSize.textContent = formatFileSize(file.size);
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-file';
+                removeBtn.innerHTML = '×';
+                removeBtn.onclick = () => removeFile(index);
+                
+                fileItem.appendChild(fileName);
+                fileItem.appendChild(fileSize);
+                fileItem.appendChild(removeBtn);
+                fileList.appendChild(fileItem);
+            });
+            
+            fileContainer.appendChild(fileList);
+        }
+        
+        function removeFile(index) {
+            const dt = new DataTransfer();
+            const files = fileInput.files;
+            
+            for (let i = 0; i < files.length; i++) {
+                if (i !== index) {
+                    dt.items.add(files[i]);
+                }
+            }
+            
+            fileInput.files = dt.files;
+            handleFileSelection(dt.files);
+        }
+        
+        function removeFileList() {
+            const existingList = fileContainer.querySelector('.file-list');
+            if (existingList) {
+                existingList.remove();
+            }
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    }
 }); 

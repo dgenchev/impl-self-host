@@ -988,3 +988,108 @@ body {
         height: 36px;
     }
 } 
+
+/* File Upload Styles */
+.file-upload-container {
+    border: 2px dashed #E2E8F0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    background: #F7FAFC;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.file-upload-container:hover {
+    border-color: #4A5568;
+    background: #EDF2F7;
+}
+
+.file-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.file-input:focus {
+    outline: none;
+    border-color: #4A5568;
+    box-shadow: 0 0 0 3px rgba(74, 85, 104, 0.1);
+}
+
+.file-upload-info {
+    color: #4A5568;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.file-upload-info p {
+    margin: 0.25rem 0;
+}
+
+.file-upload-info p:first-child {
+    font-weight: 500;
+    color: #2D3748;
+}
+
+/* File upload drag and drop states */
+.file-upload-container.drag-over {
+    border-color: #25D366;
+    background: #E0F2E0;
+}
+
+.file-upload-container.has-files {
+    border-color: #25D366;
+    background: #F0FFF4;
+}
+
+/* File list display */
+.file-list {
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.file-item .file-name {
+    flex: 1;
+    margin-right: 1rem;
+    color: #2D3748;
+}
+
+.file-item .file-size {
+    color: #718096;
+    font-size: 0.8rem;
+}
+
+.file-item .remove-file {
+    background: #F56565;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.7rem;
+    transition: background-color 0.3s ease;
+}
+
+.file-item .remove-file:hover {
+    background: #E53E3E;
+} 
