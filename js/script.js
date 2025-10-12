@@ -162,18 +162,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     try {
                         const base64 = e.target.result.split(',')[1]; // Remove data:image/jpeg;base64, prefix
                         
+                        // Prepare upload request body
+                        const uploadBody = {
+                            file: base64,
+                            filename: file.name,
+                            fileType: file.type,
+                            fileSize: file.size
+                        };
+                        
+                        // Only include conversationId if it's not null
+                        if (conversationId) {
+                            uploadBody.conversationId = conversationId;
+                        }
+                        
                         const response = await fetch('/.netlify/functions/upload-xray', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify({
-                                conversationId: conversationId,
-                                file: base64,
-                                filename: file.name,
-                                fileType: file.type,
-                                fileSize: file.size
-                            })
+                            body: JSON.stringify(uploadBody)
                         });
                         
                         if (!response.ok) {
@@ -233,21 +240,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Handle text message if present
                 if (message) {
-                    // Add user message
-                    addMessage('user', message);
-                    
-                    // Clear input and reset height
-                    chatInput.value = '';
-                    chatInput.style.height = 'auto';
-                    
+            // Add user message
+            addMessage('user', message);
+            
+            // Clear input and reset height
+            chatInput.value = '';
+            chatInput.style.height = 'auto';
+            
                     // Show typing indicator
-                    showTypingIndicator();
-                    
+            showTypingIndicator();
+            
                     // Get AI response
                     try {
                         const aiResponse = await getAIResponse(message);
-                        hideTypingIndicator();
-                        addMessage('ai', aiResponse);
+                hideTypingIndicator();
+                addMessage('ai', aiResponse);
                     } catch (error) {
                         hideTypingIndicator();
                         addMessage('ai', 'Sorry, I\'m having trouble connecting right now. Please contact us directly at +359 32 266 089 for immediate assistance.');
@@ -318,16 +325,23 @@ document.addEventListener('DOMContentLoaded', function() {
         
         async function getAIResponse(question) {
             try {
+                // Prepare request body
+                const requestBody = {
+                    message: question
+                };
+                
+                // Only include conversationId if it's not null
+                if (conversationId) {
+                    requestBody.conversationId = conversationId;
+                }
+                
                 // Call enhanced AI chat function
                 const response = await fetch('/.netlify/functions/ai-chat-enhanced', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: question,
-                        conversationId: conversationId // Include conversation ID for context
-                    })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                    body: JSON.stringify(requestBody)
                 });
                 
                 if (!response.ok) {
