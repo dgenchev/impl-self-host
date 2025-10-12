@@ -35,21 +35,35 @@ async function triggerTelegramNotification(conversationId) {
         console.log('📱 Triggering Telegram notification for:', conversationId);
 
         // Get patient info and messages
+        console.log('📱 Getting patient info...');
         const patientInfo = await getPatientInfo(conversationId);
+        console.log('📱 Patient info retrieved:', patientInfo ? 'found' : 'not found');
+        
+        console.log('📱 Getting conversation messages...');
         const messages = await getConversationMessages(conversationId);
+        console.log('📱 Messages retrieved:', messages ? messages.length : 0, 'messages');
 
         // Generate Bulgarian summary
+        console.log('📱 Generating Bulgarian summary...');
         const summary = await generateBulgarianSummary(messages, patientInfo);
+        console.log('📱 Summary generated, length:', summary ? summary.length : 0);
 
         // Send to Telegram
+        console.log('📱 Sending to Telegram...');
         await sendNewPatientNotification(patientInfo, summary, conversationId);
+        console.log('📱 Telegram message sent');
 
         // Mark as notified
+        console.log('📱 Marking as notified...');
         await markPatientNotified(conversationId);
+        console.log('📱 Marked as notified');
 
         console.log('✅ Telegram notification sent successfully');
     } catch (error) {
-        console.error('❌ Error in Telegram notification:', error);
+        console.error('❌ Error in Telegram notification for conversation:', conversationId);
+        console.error('❌ Error type:', error.constructor.name);
+        console.error('❌ Error message:', error.message);
+        console.error('❌ Error stack:', error.stack);
         throw error;
     }
 }
@@ -183,7 +197,9 @@ exports.handler = async (event, context) => {
 
                     // Trigger Telegram notification (async, don't wait)
                     triggerTelegramNotification(conversation.id).catch(error => {
-                        console.error('⚠️ Failed to send Telegram notification:', error);
+                        console.error('⚠️ Failed to send Telegram notification for conversation:', conversation.id);
+                        console.error('⚠️ Error details:', error.message);
+                        console.error('⚠️ Error stack:', error.stack);
                         // Don't throw - notification failure shouldn't break the chat
                     });
                 }
