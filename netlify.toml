@@ -1,0 +1,46 @@
+# Netlify Configuration for Dr Genchev Dental Bot
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  # General function settings
+  node_bundler = "esbuild"
+  # All dependencies are external (node_modules)
+  external_node_modules = ["@supabase/supabase-js", "openai", "node-telegram-bot-api"]
+
+# Scheduled Functions
+# Daily summary at 3 PM UTC
+# Bulgarian time (UTC+2 winter / UTC+3 summer):
+#   - Winter: 5 PM Bulgarian time
+#   - Summer: 6 PM Bulgarian time
+[functions."daily-summary"]
+  schedule = "0 15 * * *"
+
+# Redirects and Headers
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Security Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# API endpoints - CORS headers
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type, x-webhook-signature"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+
+# Environment variables (set in Netlify Dashboard)
+# These are documented in .env.example
+

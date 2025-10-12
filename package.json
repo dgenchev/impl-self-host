@@ -1,15 +1,23 @@
 {
   "name": "dr-genchev-website",
   "version": "1.0.0",
-  "description": "Dr Genchev Dental Implants Website",
+  "description": "Dr Genchev Dental Implants Website with AI Chatbot",
   "main": "index.html",
   "scripts": {
     "dev": "netlify dev",
     "build": "echo 'No build step required for static site'",
-    "deploy": "netlify deploy --prod"
+    "deploy": "netlify deploy --prod",
+    "test": "echo 'No tests yet'"
   },
   "dependencies": {
-    "axios": "^1.6.0"
+    "axios": "^1.6.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "openai": "^4.26.0",
+    "node-telegram-bot-api": "^0.66.0",
+    "crypto-js": "^4.2.0",
+    "zod": "^3.22.4",
+    "date-fns": "^3.0.0",
+    "date-fns-tz": "^3.0.0"
   },
   "devDependencies": {
     "netlify-cli": "^17.0.0"
@@ -18,7 +26,9 @@
     "dental",
     "implants",
     "netlify",
-    "static-site"
+    "static-site",
+    "ai-chatbot",
+    "telegram-bot"
   ],
   "author": "Dr Genchev",
   "license": "MIT"

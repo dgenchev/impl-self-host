@@ -226,6 +226,10 @@
                 <div class="chat-input-container">
                     <form id="chatForm" class="chat-form">
                         <div class="input-wrapper">
+                            <input type="file" id="fileInput" accept="image/*,.pdf" style="display: none;">
+                            <button type="button" id="attachButton" class="attach-button" title="Upload X-ray or image">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
                             <textarea 
                                 id="chatInput" 
                                 placeholder="Type your question here..." 
@@ -235,6 +239,10 @@
                             <button type="submit" id="sendButton" class="send-button">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
+                        </div>
+                        <div id="filePreview" class="file-preview" style="display: none;">
+                            <span id="fileName"></span>
+                            <button type="button" id="removeFile" class="remove-file">×</button>
                         </div>
                     </form>
                 </div>

@@ -94,28 +94,170 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        function sendMessage() {
+        // Store conversation ID and selected file
+        let conversationId = null;
+        let selectedFile = null;
+        
+        // File upload elements
+        const attachButton = document.getElementById('attachButton');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+        const fileName = document.getElementById('fileName');
+        const removeFile = document.getElementById('removeFile');
+        
+        // Handle attach button click
+        if (attachButton && fileInput) {
+            attachButton.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // Handle file selection
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    handleFileSelection(file);
+                }
+            });
+            
+            // Handle remove file
+            if (removeFile) {
+                removeFile.addEventListener('click', function() {
+                    clearFileSelection();
+                });
+            }
+        }
+        
+        function handleFileSelection(file) {
+            // Validate file size (10MB max)
+            const maxSize = 10 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert('File is too large. Maximum size is 10MB.');
+                return;
+            }
+            
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('File type not supported. Please upload an image (JPG, PNG, GIF, WebP) or PDF.');
+                return;
+            }
+            
+            selectedFile = file;
+            fileName.textContent = file.name;
+            filePreview.style.display = 'flex';
+        }
+        
+        function clearFileSelection() {
+            selectedFile = null;
+            fileInput.value = '';
+            filePreview.style.display = 'none';
+            fileName.textContent = '';
+        }
+        
+        async function uploadFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = async function(e) {
+                    try {
+                        const base64 = e.target.result.split(',')[1]; // Remove data:image/jpeg;base64, prefix
+                        
+                        const response = await fetch('/.netlify/functions/upload-xray', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                conversationId: conversationId,
+                                file: base64,
+                                filename: file.name,
+                                fileType: file.type,
+                                fileSize: file.size
+                            })
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`Upload failed: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        resolve(data);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                
+                reader.onerror = function() {
+                    reject(new Error('Failed to read file'));
+                };
+                
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        async function sendMessage() {
             const message = chatInput.value.trim();
-            if (!message) return;
+            const hasFile = selectedFile !== null;
             
-            // Add user message
-            addMessage('user', message);
+            // Need either message or file
+            if (!message && !hasFile) return;
             
-            // Clear input and reset height
-            chatInput.value = '';
-            chatInput.style.height = 'auto';
-            
-            // Disable send button and show typing indicator
+            // Disable send button
             sendButton.disabled = true;
-            showTypingIndicator();
+            attachButton.disabled = true;
             
-            // Simulate AI response
-            setTimeout(() => {
-                hideTypingIndicator();
-                const aiResponse = getAIResponse(message);
-                addMessage('ai', aiResponse);
+            try {
+                // Handle file upload if present
+                if (hasFile) {
+                    // Show uploading message
+                    addMessage('user', `📎 Uploading ${selectedFile.name}...`);
+                    
+                    try {
+                        await uploadFile(selectedFile);
+                        // Update message to show success
+                        const messages = chatMessages.querySelectorAll('.user-message');
+                        const lastMessage = messages[messages.length - 1];
+                        const messageText = lastMessage.querySelector('p');
+                        messageText.textContent = `📎 Uploaded ${selectedFile.name} ✓`;
+                        
+                        clearFileSelection();
+                        
+                        // Add system message
+                        addMessage('ai', 'Thank you for uploading the file. Dr. Genchev will review it.');
+                    } catch (uploadError) {
+                        console.error('Upload error:', uploadError);
+                        addMessage('ai', 'Sorry, there was an error uploading your file. Please try again or contact us directly.');
+                        clearFileSelection();
+                    }
+                }
+                
+                // Handle text message if present
+                if (message) {
+                    // Add user message
+                    addMessage('user', message);
+                    
+                    // Clear input and reset height
+                    chatInput.value = '';
+                    chatInput.style.height = 'auto';
+                    
+                    // Show typing indicator
+                    showTypingIndicator();
+                    
+                    // Get AI response
+                    try {
+                        const aiResponse = await getAIResponse(message);
+                        hideTypingIndicator();
+                        addMessage('ai', aiResponse);
+                    } catch (error) {
+                        hideTypingIndicator();
+                        addMessage('ai', 'Sorry, I\'m having trouble connecting right now. Please contact us directly at +359 32 266 089 for immediate assistance.');
+                        console.error('Error:', error);
+                    }
+                }
+            } finally {
                 sendButton.disabled = false;
-            }, 1500 + Math.random() * 1000);
+                attachButton.disabled = false;
+            }
         }
         
         function addMessage(sender, text) {
@@ -174,36 +316,47 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        function getAIResponse(question) {
-            // Show typing indicator while waiting for API response
-            showTypingIndicator();
-            
-            // Call OpenAI API via Netlify function
-            fetch('/.netlify/functions/ai-chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    message: question
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                hideTypingIndicator();
-                if (data.error) {
-                    addMessage('ai', 'Sorry, I encountered an error. Please try again or contact us directly at +359 32 266 089.');
-                } else {
-                    addMessage('ai', data.response);
+        async function getAIResponse(question) {
+            try {
+                // Call enhanced AI chat function
+                const response = await fetch('/.netlify/functions/ai-chat-enhanced', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: question,
+                        conversationId: conversationId // Include conversation ID for context
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                sendButton.disabled = false;
-            })
-            .catch(error => {
-                hideTypingIndicator();
-                addMessage('ai', 'Sorry, I\'m having trouble connecting right now. Please contact us directly at +359 32 266 089 for immediate assistance.');
-                sendButton.disabled = false;
-                console.error('Error:', error);
-            });
+                
+                const data = await response.json();
+                
+                // Store conversation ID for future messages
+                if (data.conversationId) {
+                    conversationId = data.conversationId;
+                }
+                
+                // Check if questionnaire is complete
+                if (data.questionnaireComplete) {
+                    console.log('✅ Questionnaire completed!', data.patientInfo);
+                    // Could show a success message or confirmation here
+                }
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                return data.response;
+                
+            } catch (error) {
+                console.error('Error calling AI:', error);
+                throw error;
+            }
         }
     }
 
