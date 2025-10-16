@@ -11,7 +11,16 @@
   external_node_modules = ["@supabase/supabase-js", "openai", "node-telegram-bot-api"]
 
 # Scheduled Functions
-# Daily summary at 3 PM UTC
+
+# Health check at 6 AM UTC (runs daily)
+# Bulgarian time (UTC+2 winter / UTC+3 summer):
+#   - Winter: 8 AM Bulgarian time
+#   - Summer: 9 AM Bulgarian time
+# Sends notification only if system has issues (or weekly summary on Monday)
+[functions."health-check"]
+  schedule = "0 6 * * *"
+
+# Daily summary at 3 PM UTC (only sends if there are patient queries)
 # Bulgarian time (UTC+2 winter / UTC+3 summer):
 #   - Winter: 5 PM Bulgarian time
 #   - Summer: 6 PM Bulgarian time

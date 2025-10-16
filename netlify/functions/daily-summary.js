@@ -26,21 +26,16 @@ exports.handler = async (event, context) => {
 
         console.log(`Found ${conversations.length} conversations for ${today}`);
 
-        // If no conversations, send simple message
+        // If no conversations, skip sending summary
+        // Health check will ensure system is running
         if (conversations.length === 0) {
-            await sendDailySummary(
-                'Днес нямаше разговори с пациенти.',
-                today,
-                0
-            );
-
-            console.log('✅ Daily summary sent (no conversations)');
+            console.log('ℹ️ No conversations today, skipping summary (health check will monitor system)');
 
             return {
                 statusCode: 200,
                 body: JSON.stringify({
                     success: true,
-                    message: 'Daily summary sent (no conversations)',
+                    message: 'No conversations today, summary skipped',
                     date: today,
                     conversationCount: 0
                 })
@@ -90,4 +85,6 @@ exports.handler = async (event, context) => {
         };
     }
 };
+
+
 
