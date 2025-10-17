@@ -65,7 +65,7 @@ exports.handler = async (event, context) => {
         };
 
     } catch (error) {
-        console.error('❌ Error generating daily summary:', error);
+        console.error('❌ Error generating daily summary:', error.message);
 
         // Try to send error notification
         try {

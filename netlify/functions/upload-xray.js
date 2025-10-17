@@ -160,7 +160,7 @@ exports.handler = async (event, context) => {
         };
 
     } catch (error) {
-        console.error('❌ Error uploading file:', error);
+        console.error('❌ Error uploading file:', error.message);
 
         return {
             statusCode: 500,
@@ -173,4 +173,6 @@ exports.handler = async (event, context) => {
         };
     }
 };
+
+
 

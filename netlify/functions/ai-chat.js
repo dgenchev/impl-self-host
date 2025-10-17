@@ -85,7 +85,7 @@ Important: Always mention that for specific cases, patients should schedule a co
         };
 
     } catch (error) {
-        console.error('Error calling OpenAI API:', error);
+        console.error('Error calling OpenAI API:', error.message);
         
         return {
             statusCode: 500,

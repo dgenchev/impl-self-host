@@ -12,7 +12,7 @@ const { format } = require('date-fns');
 
 // Initialize clients
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const openaiKey = process.env.OPENAI_API_KEY;
 const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
 const telegramChatId = process.env.TELEGRAM_CHAT_ID;
@@ -41,8 +41,7 @@ async function testDatabase() {
         return {
             status: 'unhealthy',
             service: 'Supabase Database',
-            message: `Database error: ${error.message}`,
-            error: error
+            message: `Database error: ${error.message}`
         };
     }
 }
@@ -74,8 +73,7 @@ async function testOpenAI() {
         return {
             status: 'unhealthy',
             service: 'OpenAI API',
-            message: `OpenAI error: ${error.message}`,
-            error: error
+            message: `OpenAI error: ${error.message}`
         };
     }
 }
@@ -103,8 +101,7 @@ async function testTelegram() {
         return {
             status: 'unhealthy',
             service: 'Telegram Bot',
-            message: `Telegram error: ${error.message}`,
-            error: error
+            message: `Telegram error: ${error.message}`
         };
     }
 }
@@ -139,7 +136,7 @@ async function sendHealthNotification(results, isHealthy) {
             }
         }
     } catch (error) {
-        console.error('❌ Failed to send health notification:', error);
+        console.error('❌ Failed to send health notification:', error.message);
         throw error;
     }
 }
@@ -193,7 +190,7 @@ exports.handler = async (event, context) => {
         };
         
     } catch (error) {
-        console.error('❌ Health check failed:', error);
+        console.error('❌ Health check failed:', error.message);
         
         // Try to send error notification
         try {
@@ -205,7 +202,7 @@ exports.handler = async (event, context) => {
                 { parse_mode: 'HTML' }
             );
         } catch (notifyError) {
-            console.error('Failed to send crash notification:', notifyError);
+            console.error('Failed to send crash notification:', notifyError.message);
         }
         
         return {
@@ -218,4 +215,5 @@ exports.handler = async (event, context) => {
         };
     }
 };
+
 

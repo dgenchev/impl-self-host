@@ -63,7 +63,7 @@ exports.handler = async (event, context) => {
         };
 
     } catch (error) {
-        console.error('❌ Database test failed:', error);
+        console.error('❌ Database test failed:', error.message);
 
         return {
             statusCode: 500,
@@ -80,4 +80,6 @@ exports.handler = async (event, context) => {
         };
     }
 };
+
+
 

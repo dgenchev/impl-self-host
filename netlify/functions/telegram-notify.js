@@ -117,7 +117,7 @@ exports.handler = async (event, context) => {
         };
 
     } catch (error) {
-        console.error('❌ Error sending Telegram notification:', error);
+        console.error('❌ Error sending Telegram notification:', error.message);
 
         // Try to send error notification to Telegram
         try {
@@ -139,4 +139,6 @@ exports.handler = async (event, context) => {
         };
     }
 };
+
+
 

@@ -122,7 +122,7 @@ exports.handler = async (event, context) => {
                 conversation = await getConversation(validatedData.conversationId);
                 conversationHistory = await getConversationMessages(validatedData.conversationId);
             } catch (error) {
-                console.error('Failed to retrieve conversation, creating new one:', error);
+                console.error('Failed to retrieve conversation, creating new one:', error.message);
                 conversation = await createConversation(validatedData.language, metadata);
             }
         } else {
@@ -225,7 +225,7 @@ exports.handler = async (event, context) => {
         };
 
     } catch (error) {
-        console.error('Error in ai-chat-enhanced:', error);
+        console.error('Error in ai-chat-enhanced:', error.message);
 
         // Handle validation errors
         if (error instanceof z.ZodError) {
