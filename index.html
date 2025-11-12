@@ -8,10 +8,7 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="images/logo/favicon.ico">
-    <link rel="icon" type="image/svg+xml" href="images/logo/logo-otimized2.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/logo/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/logo/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/logo/apple-touch-icon.png">
+    <link rel="icon" type="image/svg+xml" href="images/logo/logo-optimized2.svg">
     <link rel="manifest" href="site.webmanifest">
     
     <link rel="stylesheet" href="css/style.css">
@@ -19,30 +16,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Hidden form for Netlify form detection -->
-    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
-        <input type="text" name="first-name" />
-        <input type="text" name="last-name" />
-        <input type="email" name="email" />
-        <input type="tel" name="phone" />
-        <select name="service">
-            <option value="dental-implants">Dental Implants</option>
-            <option value="immediate-loading">Immediate Loading Implants</option>
-            <option value="consultation">Consultation</option>
-            <option value="other">Other</option>
-        </select>
-        <textarea name="message"></textarea>
-        <input type="file" name="attachments" multiple />
-    </form>
-
     <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-tooth"></i>
-                    </div>
+                    <img src="images/logo/logo-optimized2.svg" alt="Dr Genchev logo" class="logo-image">
                     <div class="logo-text">
                         <h1>Dr Genchev</h1>
                         <p>Implantologist</p>
@@ -53,14 +32,12 @@
                     <ul class="nav-menu">
                         <li><a href="#about">About</a></li>
                         <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#ai-dentist">Ask AI</a></li>
                         <li><a href="#patients">Our Patients</a></li>
                         <li><a href="#procedure">Procedure</a></li>
                         <li><a href="#contact">Contact</a></li>
-                        <li><a href="#more">More</a></li>
                     </ul>
-                    <div class="language-selector">
-                        <span>EN</span>
+                    <div class="language-selector" id="languageSelector">
+                        <span id="currentLang">EN</span>
                     </div>
                 </nav>
             </div>
@@ -95,9 +72,10 @@
                     </p>
                 </div>
                 <div class="features-image">
-                    <div class="image-placeholder">
-                        <span>Smiling Patient</span>
-                    </div>
+                    <picture>
+                        <source srcset="images/features/smiling-patient.avif" type="image/avif">
+                        <img src="images/features/smiling-patient.jpg" alt="Smiling Patient" class="feature-img">
+                    </picture>
                 </div>
             </div>
         </div>
@@ -108,9 +86,7 @@
         <div class="container">
             <div class="doctor-content">
                 <div class="doctor-image">
-                    <div class="image-placeholder">
-                        <span>Dr Genchev Photo</span>
-                    </div>
+                    <img src="images/about/dr-genchev-portrait.gif" alt="Dr Genchev" class="doctor-img">
                 </div>
                 <div class="doctor-text">
                     <h2>Meet Dr Genchev</h2>
@@ -127,19 +103,22 @@
         <div class="container">
             <div class="cert-content">
                 <div class="cert-image">
-                    <div class="image-placeholder large">
-                        <span>Clinical Master Certificate</span>
-                    </div>
+                    <img src="images/certifications/clinical-master-certificate.jpg" alt="Clinical Master Certificate" class="cert-img">
                 </div>
                 <div class="cert-video">
-                    <div class="video-placeholder">
-                        <span>YouTube Video: The Immediate Loading Protocol</span>
+                    <div class="video-embed">
+                        <iframe 
+                            src="https://www.youtube.com/embed/ei969nM_m5c?si=UgDoQ9ZJ2tMdam4t" 
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen
+                        ></iframe>
                     </div>
                 </div>
                 <div class="cert-clinic">
-                    <div class="image-placeholder">
-                        <span>Dr Genchev at the Dental Clinic</span>
-                    </div>
+                    <img src="images/about/asya-and-george-genchevi-1412x1080.jpg" alt="Dr Genchev with patient at the clinic" class="cert-img">
                 </div>
             </div>
         </div>
@@ -189,62 +168,6 @@
                         <li>Appointment 2 / Day 3: Trying on the metal framework of the dental bridge.</li>
                         <li>Appointment 3 / Day 5: Fitting your new teeth and going home with a smile on your face.</li>
                     </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- AI Dentist Section -->
-    <section id="ai-dentist" class="ai-dentist">
-        <div class="container">
-            <h2>Ask the AI Dentist</h2>
-            <p class="ai-subtitle">Get instant answers to your dental implant questions</p>
-            
-            <div class="chat-container">
-                <div class="chat-header">
-                    <div class="chat-avatar">
-                        <i class="fas fa-user-md"></i>
-                    </div>
-                    <div class="chat-info">
-                        <h3>Dr. Genchev AI Assistant</h3>
-                        <span class="status">Online</span>
-                    </div>
-                </div>
-                
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message ai-message">
-                        <div class="message-avatar">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <div class="message-content">
-                            <p>Hello! I'm Dr. Genchev's AI assistant, specialized in dental implants and immediate loading procedures. How can I help you today?</p>
-                            <span class="message-time">Just now</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="chat-input-container">
-                    <form id="chatForm" class="chat-form">
-                        <div class="input-wrapper">
-                            <input type="file" id="fileInput" accept="image/*,.pdf" style="display: none;">
-                            <button type="button" id="attachButton" class="attach-button" title="Upload X-ray or image">
-                                <i class="fas fa-paperclip"></i>
-                            </button>
-                            <textarea 
-                                id="chatInput" 
-                                placeholder="Type your question here..." 
-                                rows="1"
-                                maxlength="500"
-                            ></textarea>
-                            <button type="submit" id="sendButton" class="send-button">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                        <div id="filePreview" class="file-preview" style="display: none;">
-                            <span id="fileName"></span>
-                            <button type="button" id="removeFile" class="remove-file">×</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -317,89 +240,56 @@
                 </iframe>
             </div>
             
-            <div class="contact-content">
-                <div class="contact-form">
-                    <form name="contact" method="POST" netlify netlify-honeypot="bot-field">
-                        <input type="hidden" name="form-name" value="contact" />
-                        <p class="hidden">
-                            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-                        </p>
-                        
-                        <div class="form-group">
-                            <label for="first-name">First Name *</label>
-                            <input type="text" id="first-name" name="first-name" required>
+            <!-- AI Dentist Assistant -->
+            <div class="ai-assistant-container">
+                <h3>Ask the AI Dentist</h3>
+                <p class="ai-subtitle">Get instant answers to your dental implant questions</p>
+                
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div class="chat-avatar">
+                            <i class="fas fa-user-md"></i>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="last-name">Last Name *</label>
-                            <input type="text" id="last-name" name="last-name" required>
+                        <div class="chat-info">
+                            <h3>Dr. Genchev AI Assistant</h3>
+                            <span class="status">Online</span>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email *</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Phone *</label>
-                            <input type="tel" id="phone" name="phone" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="service">Type of service *</label>
-                            <select id="service" name="service" required>
-                                <option value="">Select a service</option>
-                                <option value="dental-implants">Dental Implants</option>
-                                <option value="immediate-loading">Immediate Loading Implants</option>
-                                <option value="consultation">Consultation</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="4" placeholder="Tell us about your dental needs..."></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="attachments">Small Files (Photos, Documents)</label>
-                            <div class="file-upload-container">
-                                <input type="file" id="attachments" name="attachments" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="file-input">
-                                <div class="file-upload-info">
-                                    <p>Upload photos, documents, or small X-rays (max 8MB total)</p>
-                                    <p>Accepted formats: JPG, PNG, PDF, DOC, DOCX</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="large-files">Large Files (X-rays, Tomography)</label>
-                            <div class="help-text">
-                                <p><strong>Instructions for large files:</strong></p>
-                                <ol>
-                                    <li>Upload your X-rays/tomography to Google Drive, Dropbox, or OneDrive</li>
-                                    <li>Right-click the file/folder → "Share" → "Copy link"</li>
-                                    <li>Make sure the link allows "Anyone with the link can view"</li>
-                                    <li>Paste the link in the message field above</li>
-                                </ol>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="recaptcha-placeholder">
-                                <span>I'm not a robot</span>
-                            </div>
-                        </div>
-                        
-                        <button type="submit" class="submit-btn">Send Message</button>
-                    </form>
+                    </div>
                     
-                    <div class="alternative-contact">
-                        <p><strong>Need to send large files immediately?</strong></p>
-                        <a href="https://wa.me/+35932266089?text=Hello! I would like to send you some dental X-rays or tomography files." class="whatsapp-btn" target="_blank">
-                            <i class="fab fa-whatsapp"></i>
-                            Send via WhatsApp
-                        </a>
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message ai-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <p>Hello! I'm Dr. Genchev's AI assistant, specialized in dental implants and immediate loading procedures. How can I help you today?</p>
+                                <span class="message-time">Just now</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <form id="chatForm" class="chat-form">
+                            <div class="input-wrapper">
+                                <input type="file" id="fileInput" accept="image/*,.pdf" style="display: none;">
+                                <button type="button" id="attachButton" class="attach-button" title="Upload X-ray or image">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+                                <textarea 
+                                    id="chatInput" 
+                                    placeholder="Type your question here..." 
+                                    rows="1"
+                                    maxlength="500"
+                                ></textarea>
+                                <button type="submit" id="sendButton" class="send-button">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div id="filePreview" class="file-preview" style="display: none;">
+                                <span id="fileName"></span>
+                                <button type="button" id="removeFile" class="remove-file">×</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -411,7 +301,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-copyright">
-                    <p>&copy; 2023 by Dr Genchevi</p>
+                    <p>&copy; 2025 by D Genchev</p>
                 </div>
             </div>
         </div>

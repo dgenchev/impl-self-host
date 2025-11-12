@@ -35,38 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Contact Form handling
-    const contactForm = document.querySelector('form[name="contact"]');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const formObject = {};
-            
-            formData.forEach((value, key) => {
-                formObject[key] = value;
-            });
-            
-            // Simulate form submission
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                alert('Thank you for your message! We will get back to you soon.');
-                this.reset();
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
-        });
-    }
-
     // AI Chat Interface
     const chatForm = document.getElementById('chatForm');
     const chatInput = document.getElementById('chatInput');
@@ -440,16 +408,163 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Language Translation System
+    let currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
+    let translations = {};
+    
+    // Load translation file
+    async function loadTranslations(lang) {
+        try {
+            const response = await fetch(`js/translations/${lang}.json`);
+            if (!response.ok) {
+                throw new Error(`Failed to load ${lang} translations`);
+            }
+            translations = await response.json();
+            applyTranslations();
+        } catch (error) {
+            console.error('Translation loading error:', error);
+            // Fallback to English if translation fails
+            if (lang !== 'en') {
+                loadTranslations('en');
+            }
+        }
+    }
+    
+    // Apply translations to the page
+    function applyTranslations() {
+        // Navigation
+        document.querySelector('a[href="#about"]').textContent = translations.nav.about;
+        document.querySelector('a[href="#faq"]').textContent = translations.nav.faq;
+        document.querySelector('a[href="#patients"]').textContent = translations.nav.patients;
+        document.querySelector('a[href="#procedure"]').textContent = translations.nav.procedure;
+        document.querySelector('a[href="#contact"]').textContent = translations.nav.contact;
+        
+        // Hero section
+        document.querySelector('.hero-subtitle').textContent = translations.hero.subtitle;
+        document.querySelector('.hero-main-title').textContent = translations.hero.title;
+        document.querySelector('.hero-tagline').textContent = translations.hero.tagline;
+        
+        // Features section
+        const highlights = document.querySelectorAll('.features-highlights h2');
+        highlights[0].textContent = translations.features.highlight1;
+        highlights[1].textContent = translations.features.highlight2;
+        highlights[2].textContent = translations.features.highlight3;
+        document.querySelector('.features-description').textContent = translations.features.description;
+        
+        // About section
+        document.querySelector('.doctor-text h2').textContent = translations.about.title;
+        document.querySelector('.doctor-text p').textContent = translations.about.description;
+        
+        // FAQ section
+        const faqSection = document.querySelector('#faq');
+        faqSection.querySelector('h2').textContent = translations.faq.title;
+        faqSection.querySelector('p').textContent = translations.faq.subtitle;
+        
+        const faqItems = faqSection.querySelectorAll('.faq-item');
+        
+        // FAQ Q1
+        faqItems[0].querySelector('h3').textContent = translations.faq.q1.title;
+        const q1List = faqItems[0].querySelectorAll('ol li');
+        translations.faq.q1.items.forEach((item, index) => {
+            if (q1List[index]) q1List[index].textContent = item;
+        });
+        
+        // FAQ Q2
+        faqItems[1].querySelector('h3').textContent = translations.faq.q2.title;
+        faqItems[1].querySelector('p').textContent = translations.faq.q2.description;
+        
+        // FAQ Q3
+        faqItems[2].querySelector('h3').textContent = translations.faq.q3.title;
+        faqItems[2].querySelector('p').textContent = translations.faq.q3.subtitle;
+        const q3List = faqItems[2].querySelectorAll('ol li');
+        translations.faq.q3.items.forEach((item, index) => {
+            if (q3List[index]) q3List[index].textContent = item;
+        });
+        
+        // FAQ Q4
+        faqItems[3].querySelector('h3').textContent = translations.faq.q4.title;
+        const q4List = faqItems[3].querySelectorAll('ol li');
+        translations.faq.q4.items.forEach((item, index) => {
+            if (q4List[index]) q4List[index].textContent = item;
+        });
+        
+        // AI Assistant section
+        const aiContainer = document.querySelector('.ai-assistant-container');
+        if (aiContainer) {
+            aiContainer.querySelector('h3').textContent = translations.ai.title;
+            aiContainer.querySelector('.ai-subtitle').textContent = translations.ai.subtitle;
+            document.querySelector('.chat-info h3').textContent = translations.ai.assistantName;
+            document.querySelector('.chat-info .status').textContent = translations.ai.status;
+            
+            // Update welcome message
+            const welcomeMsg = document.querySelector('.ai-message .message-content p');
+            if (welcomeMsg) {
+                welcomeMsg.textContent = translations.ai.welcomeMessage;
+            }
+            
+            // Update placeholder
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                chatInput.setAttribute('placeholder', translations.ai.placeholder);
+            }
+            
+            // Update attach button tooltip
+            const attachBtn = document.getElementById('attachButton');
+            if (attachBtn) {
+                attachBtn.setAttribute('title', translations.ai.uploadTooltip);
+            }
+        }
+        
+        // Testimonials section
+        document.querySelector('#patients h2').textContent = translations.testimonials.title;
+        
+        // Procedure section
+        const procedureSection = document.querySelector('#procedure');
+        procedureSection.querySelector('h2').textContent = translations.procedure.title;
+        
+        const timelineItems = procedureSection.querySelectorAll('.timeline-item');
+        timelineItems[0].querySelector('h3').textContent = translations.procedure.day0.title;
+        timelineItems[0].querySelector('p').textContent = translations.procedure.day0.description;
+        timelineItems[1].querySelector('h3').textContent = translations.procedure.day1.title;
+        timelineItems[1].querySelector('p').textContent = translations.procedure.day1.description;
+        timelineItems[2].querySelector('h3').textContent = translations.procedure.day3.title;
+        timelineItems[2].querySelector('p').textContent = translations.procedure.day3.description;
+        timelineItems[3].querySelector('h3').textContent = translations.procedure.day5.title;
+        timelineItems[3].querySelector('p').textContent = translations.procedure.day5.description;
+        
+        // Contact section
+        document.querySelector('#contact h2').textContent = translations.contact.title;
+        
+        // Footer
+        document.querySelector('.footer-copyright p').textContent = translations.footer.copyright;
+    }
+    
     // Language selector functionality
-    const languageSelector = document.querySelector('.language-selector');
-    if (languageSelector) {
+    const languageSelector = document.getElementById('languageSelector');
+    const currentLangSpan = document.getElementById('currentLang');
+    
+    if (languageSelector && currentLangSpan) {
+        // Set initial language display
+        currentLangSpan.textContent = currentLanguage.toUpperCase();
+        
+        // Load initial translations
+        loadTranslations(currentLanguage);
+        
         languageSelector.addEventListener('click', function() {
             // Toggle between languages (EN, BG, RU)
-            const currentLang = this.textContent.trim();
-            const languages = ['EN', 'BG', 'RU'];
-            const currentIndex = languages.indexOf(currentLang);
+            const languages = ['en', 'bg', 'ru'];
+            const currentIndex = languages.indexOf(currentLanguage);
             const nextIndex = (currentIndex + 1) % languages.length;
-            this.textContent = languages[nextIndex];
+            currentLanguage = languages[nextIndex];
+            
+            // Update display
+            currentLangSpan.textContent = currentLanguage.toUpperCase();
+            
+            // Save preference
+            localStorage.setItem('preferredLanguage', currentLanguage);
+            
+            // Load and apply new translations
+            loadTranslations(currentLanguage);
         });
     }
 

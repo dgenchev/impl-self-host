@@ -1,0 +1,109 @@
+{
+  "nav": {
+    "about": "About",
+    "faq": "FAQ",
+    "patients": "Our Patients",
+    "procedure": "Procedure",
+    "contact": "Contact"
+  },
+  "hero": {
+    "subtitle": "Dr Genchev",
+    "title": "DENTAL IMPLANTS",
+    "tagline": "Perfect smile"
+  },
+  "features": {
+    "highlight1": "-NO WAIT-",
+    "highlight2": "-FIXED PRICE-",
+    "highlight3": "-5 DAYS-",
+    "description": "The first specialized centre for Strategic Dental Implantology in Plovdiv, Bulgaria is here to offer you on-the-spot end-to-end dental treatment. The decades of experience combined with a fixed price give you a peace of mind and the comfort that you are in good hands. Last but not least, there is no long healing period until the final prosthesis is mounted."
+  },
+  "about": {
+    "title": "Meet Dr Genchev",
+    "description": "Dr Genchev is a certified Clinical Master and an International Lecturer on Immediate Loading in Dental Implantology of The International Implant Foundation. He has 30 years of dental experience with an intense focus on Immediate Dental Implantology. His rich clinical experience and numerous satisfied patients are a testament to his professionalism."
+  },
+  "faq": {
+    "title": "FAQ",
+    "subtitle": "The Answers You Need",
+    "q1": {
+      "title": "Immediate Dental Implants are:",
+      "items": [
+        "Fast – designed for immediate loading – within 72 hours",
+        "Safe – the operation is simple and requires no bone augmentation",
+        "Less painful – no additional pain apart from tooth extraction",
+        "Less costly – due to the simpler and more efficient process"
+      ]
+    },
+    "q2": {
+      "title": "Why Immediate Dental Implants?",
+      "description": "It is a modern system for strategic dental implantology. The cortical bone is central to this implantology system. It has a dense outer surface which is resistant to bending and torsion and makes it ideal for weight bearing. Therefore, immediate dental implants do not require the costly procedures of bone grafting and sinus lifting. This minimizes the total cost, time, and effort expended, which translates into faster, cheaper, and less painful experience for the patient."
+    },
+    "q3": {
+      "title": "What is Immediate Dental Implantology?",
+      "subtitle": "You are saving, because:",
+      "items": [
+        "No bone augmentation or sinus lift necessary – amounting to 30% of the treatment cost.",
+        "The procedure lasts one week not 3-6 months, meaning you don't need expensive temporary constructions – amounting to 20% of the treatment cost.",
+        "The procedure is predictable, which allows us to fix the price. Conventional implantology may in some cases lead to a series of unexpected expenses.",
+        "Fewer appointments and hours spent with the implantologist."
+      ]
+    },
+    "q4": {
+      "title": "How Can You Offer Better Prices?",
+      "items": [
+        "Contact us via email, phone, WhatsApp, or the contact form below. Let us know what treatment you need or send us your treatment plan, if you have one. Recent radiographies or tomographies will help us give you tailored advice. These can be made here immediately prior to the treatment.",
+        "After receiving our preliminary advice and price quote, you are invited for a checkup. Upon your agreement, the treatment can start.",
+        "Appointment 1 / Day 1: Go over the treatment plan again and proceed with the treatment. In most cases the dental implants can be fitted during this first session.",
+        "Appointment 2 / Day 3: Trying on the metal framework of the dental bridge.",
+        "Appointment 3 / Day 5: Fitting your new teeth and going home with a smile on your face."
+      ]
+    }
+  },
+  "ai": {
+    "title": "Ask the AI Dentist",
+    "subtitle": "Get instant answers to your dental implant questions",
+    "assistantName": "Dr. Genchev AI Assistant",
+    "status": "Online",
+    "welcomeMessage": "Hello! I'm Dr. Genchev's AI assistant, specialized in dental implants and immediate loading procedures. How can I help you today?",
+    "placeholder": "Type your question here...",
+    "uploadTooltip": "Upload X-ray or image"
+  },
+  "testimonials": {
+    "title": "According to Our Patients"
+  },
+  "procedure": {
+    "title": "Standard Procedure",
+    "day0": {
+      "title": "Day 0",
+      "description": "Contact us and share any available information about your dental status, such as recent radiographies or tomographies, or an existing treatment plan. We will provide our opinion and a price quote. Upon agreement, we will schedule a date for the initial checkup."
+    },
+    "day1": {
+      "title": "Day 1",
+      "description": "Go over the treatment plan again and proceed with the treatment. In most cases the dental implants can be fitted during this first session."
+    },
+    "day3": {
+      "title": "Day 3",
+      "description": "Trying on the metal framework of the dental bridge."
+    },
+    "day5": {
+      "title": "Day 5",
+      "description": "Fitting your new teeth and going home with a smile on your face."
+    }
+  },
+  "contact": {
+    "title": "CONTACT US"
+  },
+  "footer": {
+    "copyright": "© 2025 by D Genchev"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

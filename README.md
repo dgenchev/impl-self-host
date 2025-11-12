@@ -8,6 +8,9 @@ A modern, responsive website for Dr. Genchev's dental implantology clinic, featu
 - **Modern UI**: Clean, professional design with light green theme
 - **Interactive Elements**: Smooth scrolling, form handling, animations
 - **SEO Optimized**: Proper meta tags and semantic HTML
+- **AI Chatbot**: GPT-4 powered multilingual chatbot for patient inquiries
+- **Automated Notifications**: Telegram integration for real-time patient updates
+- **Health Monitoring**: Automated system health checks and monitoring
 - **Contact Forms**: Integrated contact and AI dentist forms
 - **Testimonials**: Patient testimonials section
 - **FAQ Section**: Comprehensive information about dental implants
@@ -17,13 +20,42 @@ A modern, responsive website for Dr. Genchev's dental implantology clinic, featu
 
 ```
 dr-genchev-website/
-├── index.html          # Main HTML file
+├── index.html                    # Main HTML file
 ├── css/
-│   └── style.css       # Main stylesheet
+│   └── style.css                 # Main stylesheet
 ├── js/
-│   └── script.js       # JavaScript functionality
-├── deploy.sh           # Deployment script
-└── README.md          # This file
+│   ├── script.js                 # JavaScript functionality
+│   └── translations/             # i18n files (en, bg, ru)
+├── lib/                          # Shared libraries
+│   ├── supabase-client.js        # Database operations
+│   ├── openai-client.js          # AI chatbot logic
+│   ├── telegram-client.js        # Telegram notifications
+│   ├── encryption-utils.js       # GDPR encryption
+│   └── gdpr-utils.js             # Data protection utilities
+├── netlify/
+│   └── functions/                # Serverless functions
+│       ├── ai-chat-enhanced.js   # Main chatbot endpoint
+│       ├── daily-summary.js      # Daily patient summary
+│       ├── health-check.js       # System health monitoring
+│       ├── telegram-notify.js    # Telegram notifications
+│       └── upload-xray.js        # X-ray upload handling
+├── docs/                         # Documentation (see docs/README.md)
+│   ├── setup/                     # Setup guides
+│   ├── deployment/                # Deployment documentation
+│   ├── testing/                   # Testing documentation
+│   ├── phases/                    # Development phase records
+│   └── guides/                    # Additional guides
+├── scripts/                       # Utility scripts
+│   ├── deploy.sh                  # Deployment script
+│   ├── optimize-images.sh        # Image optimization
+│   └── test-health-check.js      # Health check test
+├── images/                        # Image assets
+├── docs/
+│   └── setup/
+│       └── database-schema.sql    # Database schema
+├── netlify.toml                   # Netlify configuration
+├── package.json                   # Node.js dependencies
+└── README.md                      # This file
 ```
 
 ## 🚀 Quick Start
@@ -130,7 +162,7 @@ The language selector supports:
 2. **Manual Deployment**
    ```bash
    # Build and deploy
-   ./deploy.sh
+   ./scripts/deploy.sh
    ```
 
 3. **Custom Domain** (Optional)
@@ -138,7 +170,17 @@ The language selector supports:
    - Update DNS settings
 
 ### Environment Variables
-Set these in Netlify dashboard if needed:
+Set these in Netlify dashboard:
+
+**Required:**
+- `SUPABASE_URL`: Supabase project URL
+- `SUPABASE_SERVICE_KEY`: Supabase service role key
+- `OPENAI_API_KEY`: OpenAI API key for GPT-4
+- `TELEGRAM_BOT_TOKEN`: Telegram bot token
+- `TELEGRAM_CHAT_ID`: Telegram chat ID for notifications
+- `ENCRYPTION_KEY`: 32-byte encryption key for GDPR compliance
+
+**Optional:**
 - `CONTACT_EMAIL`: Email for form submissions
 - `WHATSAPP_NUMBER`: WhatsApp business number
 
@@ -166,6 +208,37 @@ The website is fully responsive with breakpoints:
 - Smooth animations
 - Progressive enhancement
 
+## 🤖 AI Chatbot & Monitoring
+
+### Features
+- **Multilingual Support**: Auto-detects English, Bulgarian, and Russian
+- **Context Awareness**: Maintains conversation history
+- **Patient Info Extraction**: Automatically collects contact details
+- **Real-time Notifications**: Sends patient inquiries to Telegram
+- **GDPR Compliant**: Encrypted storage with auto-deletion
+- **Health Monitoring**: Automated system health checks
+
+### Daily Operations
+
+**Health Check (Daily at 6 AM UTC / 8-9 AM Bulgarian)**
+- Tests database, OpenAI API, and Telegram bot
+- Sends alerts only when systems fail
+- Weekly confirmation every Monday
+- See [docs/guides/HEALTH-CHECK-SYSTEM.md](docs/guides/HEALTH-CHECK-SYSTEM.md) for details
+
+**Daily Summary (Daily at 3 PM UTC / 5-6 PM Bulgarian)**
+- Sends summary only when there are patient queries
+- Generates Bulgarian summary using GPT-4
+- Includes patient information and concerns
+- Silent when no queries (no spam notifications)
+
+### Testing
+
+Test the health check locally:
+```bash
+npm run test:health
+```
+
 ## 🛠️ Development
 
 ### Adding New Sections
@@ -178,6 +251,12 @@ The website is fully responsive with breakpoints:
 - Maintain consistent spacing (rem units)
 - Follow the established color palette
 - Ensure accessibility standards
+
+### Backend Functions
+- Located in `netlify/functions/`
+- Use Netlify serverless functions
+- Shared libraries in `lib/` directory
+- See individual function documentation for details
 
 ## 📞 Contact Information
 
