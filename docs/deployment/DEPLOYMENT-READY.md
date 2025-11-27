@@ -173,6 +173,22 @@ git push origin main
 4. **Complete a questionnaire**
 5. **Check Telegram for notification**
 
+### Step 6: Set Up Custom Domain (Optional)
+
+Your site is currently accessible at `https://your-site.netlify.app`. To use your own domain:
+
+1. **See detailed guide:** `docs/deployment/CUSTOM-DOMAIN-SETUP.md`
+2. **Quick start:** `docs/deployment/CUSTOM-DOMAIN-QUICK-START.md`
+
+**Options:**
+- **Buy new domain** through Netlify (easiest, ~5 minutes)
+- **Use existing domain** (configure DNS, ~15 minutes + 24-48h propagation)
+
+**Benefits:**
+- Professional domain name (e.g., `dr-genchev.com`)
+- Free SSL certificate (automatic)
+- Better branding and SEO
+
 ---
 
 ## 🎯 Post-Deployment Monitoring

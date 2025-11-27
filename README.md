@@ -166,8 +166,10 @@ The language selector supports:
    ```
 
 3. **Custom Domain** (Optional)
-   - Configure custom domain in Netlify dashboard
-   - Update DNS settings
+   - See detailed guide: `docs/deployment/CUSTOM-DOMAIN-SETUP.md`
+   - Quick start checklist: `docs/deployment/CUSTOM-DOMAIN-QUICK-START.md`
+   - Options: Buy through Netlify or use existing domain
+   - Automatic SSL certificate included
 
 ### Environment Variables
 Set these in Netlify dashboard:
