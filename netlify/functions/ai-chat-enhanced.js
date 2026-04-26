@@ -96,10 +96,22 @@ const ChatRequestSchema = z.object({
     message: 'Either message or gdprConsented must be provided'
 });
 
+const ALLOWED_ORIGINS = new Set([
+    'https://dentalimplantsgenchev.com',
+    'https://www.dentalimplantsgenchev.com',
+    'https://dr-genchevi.com',
+    'https://www.dr-genchevi.com'
+]);
+
 exports.handler = async (event, context) => {
+    const origin = event.headers.origin || '';
+    const corsOrigin = ALLOWED_ORIGINS.has(origin)
+        ? origin
+        : (process.env.NODE_ENV !== 'production' ? '*' : 'https://dentalimplantsgenchev.com');
+
     // CORS headers
     const headers = {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': corsOrigin,
         'Access-Control-Allow-Headers': 'Content-Type, x-conversation-id',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Content-Type': 'application/json'

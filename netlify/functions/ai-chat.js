@@ -2,11 +2,29 @@ const axios = require('axios');
 const { z } = require('zod');
 const { sanitizeInput } = require('../../lib/gdpr-utils');
 
+const ALLOWED_ORIGINS = new Set([
+    'https://dentalimplantsgenchev.com',
+    'https://www.dentalimplantsgenchev.com',
+    'https://dr-genchevi.com',
+    'https://www.dr-genchevi.com'
+]);
+
 const RequestSchema = z.object({
     message: z.string().min(1).max(2000)
 });
 
 exports.handler = async function(event, context) {
+    const origin = event.headers.origin || '';
+    const corsOrigin = ALLOWED_ORIGINS.has(origin)
+        ? origin
+        : (process.env.NODE_ENV !== 'production' ? '*' : 'https://dentalimplantsgenchev.com');
+
+    const corsHeaders = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': corsOrigin,
+        'Access-Control-Allow-Headers': 'Content-Type'
+    };
+
     // Only allow POST requests
     if (event.httpMethod !== 'POST') {
         return {
@@ -83,29 +101,16 @@ Important: Always mention that for specific cases, patients should schedule a co
 
         return {
             statusCode: 200,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            },
-            body: JSON.stringify({
-                response: aiResponse
-            })
+            headers: corsHeaders,
+            body: JSON.stringify({ response: aiResponse })
         };
 
     } catch (error) {
         console.error('Error calling OpenAI API:', error.message);
-        
         return {
             statusCode: 500,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            },
-            body: JSON.stringify({
-                error: 'Failed to get AI response. Please try again or contact us directly.'
-            })
+            headers: corsHeaders,
+            body: JSON.stringify({ error: 'Failed to get AI response. Please try again or contact us directly.' })
         };
     }
 }; 
