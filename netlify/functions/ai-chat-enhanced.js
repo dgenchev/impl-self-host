@@ -12,7 +12,8 @@ const {
     getConversationMessages,
     savePatientInfo,
     getPatientInfo,
-    markPatientNotified
+    markPatientNotified,
+    logAudit
 } = require('../../lib/supabase-client');
 const {
     detectLanguage,
@@ -20,8 +21,7 @@ const {
     extractPatientInfo,
     generateBulgarianSummary
 } = require('../../lib/openai-client');
-const { getConsentText } = require('../../lib/gdpr-utils');
-const { sanitizeInput } = require('../../lib/gdpr-utils');
+const { getConsentText, sanitizeInput } = require('../../lib/gdpr-utils');
 const {
     sendNewPatientNotification
 } = require('../../lib/telegram-client');
@@ -38,6 +38,9 @@ async function triggerTelegramNotification(conversationId) {
         console.log('📱 Getting patient info...');
         const patientInfo = await getPatientInfo(conversationId);
         console.log('📱 Patient info retrieved:', patientInfo ? 'found' : 'not found');
+        if (patientInfo) {
+            await logAudit(conversationId, 'patient_info_accessed', { purpose: 'telegram_notification' });
+        }
         
         console.log('📱 Getting conversation messages...');
         const messages = await getConversationMessages(conversationId);
@@ -68,11 +71,29 @@ async function triggerTelegramNotification(conversationId) {
     }
 }
 
+// Pre-canned responses for consent handling (avoids extra OpenAI call)
+const CONSENT_ACCEPTED_MESSAGES = {
+    en: "Thank you for your consent. Dr. Genchev's office will contact you soon to schedule your appointment.",
+    bg: "Благодарим за вашето съгласие. Офисът на д-р Генчев ще се свърже с вас скоро за насрочване на час.",
+    ru: "Спасибо за согласие. Офис доктора Генчева свяжется с вами в ближайшее время для записи на прием.",
+    fr: "Merci pour votre consentement. Le cabinet du Dr Genchev vous contactera bientôt pour planifier votre rendez-vous."
+};
+
+const CONSENT_DECLINED_MESSAGES = {
+    en: "Understood. Your contact information will not be saved. Please feel free to continue asking questions.",
+    bg: "Разбрахме. Вашите данни няма да бъдат запазени. Можете да продължите да задавате въпроси.",
+    ru: "Понятно. Ваши данные не будут сохранены. Вы можете продолжать задавать вопросы.",
+    fr: "Compris. Vos coordonnées ne seront pas enregistrées. N'hésitez pas à continuer à poser des questions."
+};
+
 // Input validation schema
 const ChatRequestSchema = z.object({
-    message: z.string().min(1).max(2000),
+    message: z.string().max(2000).optional().default(''),
     conversationId: z.string().uuid().optional(),
-    language: z.enum(['en', 'bg', 'ru', 'fr', 'auto']).optional().default('auto')
+    language: z.enum(['en', 'bg', 'ru', 'fr', 'auto']).optional().default('auto'),
+    gdprConsented: z.boolean().optional()
+}).refine(data => data.message.length > 0 || data.gdprConsented !== undefined, {
+    message: 'Either message or gdprConsented must be provided'
 });
 
 exports.handler = async (event, context) => {
@@ -130,6 +151,59 @@ exports.handler = async (event, context) => {
             conversation = await createConversation(validatedData.language, metadata);
         }
 
+        // Step 2 (pre-check): Handle explicit GDPR consent response — no OpenAI call needed
+        if (conversation.status === 'awaiting_consent' && validatedData.gdprConsented !== undefined) {
+            const lang = conversation.language || 'en';
+
+            if (validatedData.gdprConsented === true) {
+                const fullHistory = await getConversationMessages(conversation.id);
+                const extracted = await extractPatientInfo(fullHistory);
+
+                if (extracted.isComplete) {
+                    const consentText = getConsentText(lang);
+                    await savePatientInfo(conversation.id, {
+                        firstName: extracted.firstName,
+                        lastName: extracted.lastName,
+                        phone: extracted.phone,
+                        email: extracted.email,
+                        dentalConcerns: extracted.dentalConcerns,
+                        preferredTimes: extracted.preferredTimes
+                    }, consentText);
+                    await updateConversation(conversation.id, { status: 'completed' });
+
+                    triggerTelegramNotification(conversation.id).catch(err => {
+                        console.error('⚠️ Failed to send Telegram notification:', err.message);
+                    });
+                }
+
+                return {
+                    statusCode: 200,
+                    headers,
+                    body: JSON.stringify({
+                        response: CONSENT_ACCEPTED_MESSAGES[lang] || CONSENT_ACCEPTED_MESSAGES.en,
+                        conversationId: conversation.id,
+                        language: lang,
+                        questionnaireComplete: true,
+                        consentAccepted: true
+                    })
+                };
+            } else {
+                // Patient declined — reset to active so chat can continue normally
+                await updateConversation(conversation.id, { status: 'active' });
+
+                return {
+                    statusCode: 200,
+                    headers,
+                    body: JSON.stringify({
+                        response: CONSENT_DECLINED_MESSAGES[lang] || CONSENT_DECLINED_MESSAGES.en,
+                        conversationId: conversation.id,
+                        language: lang,
+                        consentDeclined: true
+                    })
+                };
+            }
+        }
+
         // Step 2: Detect or get language
         let language = conversation.language;
         
@@ -158,52 +232,32 @@ exports.handler = async (event, context) => {
 
         let patientInfo = null;
         let questionnaireComplete = false;
+        let requiresConsent = false;
+        let consentText = null;
 
-        if (totalMessages >= 4) {
-            // Get fresh conversation history including new messages
+        // Only attempt extraction after enough context, and skip if already awaiting consent
+        if (totalMessages >= 4 && conversation.status !== 'awaiting_consent') {
             const fullHistory = await getConversationMessages(conversation.id);
-            
-            // Extract patient information
             const extracted = await extractPatientInfo(fullHistory);
 
             if (extracted.isComplete) {
-                // Check if we already saved this info
                 const existingInfo = await getPatientInfo(conversation.id);
 
                 if (!existingInfo) {
-                    // Save patient info with consent
-                    const consentText = getConsentText(language);
-                    
-                    await savePatientInfo(
-                        conversation.id,
-                        {
-                            firstName: extracted.firstName,
-                            lastName: extracted.lastName,
-                            phone: extracted.phone,
-                            email: extracted.email,
-                            dentalConcerns: extracted.dentalConcerns,
-                            preferredTimes: extracted.preferredTimes
-                        },
-                        consentText
-                    );
-
-                    // Update conversation status
-                    await updateConversation(conversation.id, { status: 'completed' });
-
-                    questionnaireComplete = true;
-                    patientInfo = extracted;
-
-                    console.log('✅ Patient info collected:', conversation.id);
-
-                    // Trigger Telegram notification (async, don't wait)
-                    triggerTelegramNotification(conversation.id).catch(error => {
-                        console.error('⚠️ Failed to send Telegram notification for conversation:', conversation.id);
-                        console.error('⚠️ Error details:', error.message);
-                        console.error('⚠️ Error stack:', error.stack);
-                        // Don't throw - notification failure shouldn't break the chat
-                    });
+                    // Request explicit consent before persisting PII
+                    await updateConversation(conversation.id, { status: 'awaiting_consent' });
+                    requiresConsent = true;
+                    consentText = getConsentText(language);
+                    console.log('📋 Consent requested for conversation:', conversation.id);
                 }
             }
+        }
+
+        // If the conversation was already awaiting consent (e.g. user sent another message),
+        // remind the frontend to show the consent prompt again.
+        if (!requiresConsent && conversation.status === 'awaiting_consent') {
+            requiresConsent = true;
+            consentText = getConsentText(language);
         }
 
         // Step 7: Return response
@@ -215,10 +269,12 @@ exports.handler = async (event, context) => {
                 conversationId: conversation.id,
                 language: language,
                 questionnaireComplete: questionnaireComplete,
+                requiresConsent: requiresConsent || undefined,
+                consentText: consentText || undefined,
                 patientInfo: questionnaireComplete ? {
-                    firstName: patientInfo.firstName,
-                    lastName: patientInfo.lastName,
-                    phone: patientInfo.phone
+                    firstName: patientInfo?.firstName,
+                    lastName: patientInfo?.lastName,
+                    phone: patientInfo?.phone
                 } : null,
                 messageCount: totalMessages
             })

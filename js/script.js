@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Store conversation ID and selected file
-        let conversationId = null;
+        let conversationId = localStorage.getItem('dental_chat_conversation_id');
         let selectedFile = null;
         
         // File upload elements
@@ -293,52 +293,115 @@ document.addEventListener('DOMContentLoaded', function() {
         
         async function getAIResponse(question) {
             try {
-                // Prepare request body
-                const requestBody = {
-                    message: question
-                };
-                
-                // Only include conversationId if it's not null
-                if (conversationId) {
-                    requestBody.conversationId = conversationId;
-                }
-                
-                // Call enhanced AI chat function
+                const requestBody = { message: question };
+                if (conversationId) requestBody.conversationId = conversationId;
+
                 const response = await fetch('/.netlify/functions/ai-chat-enhanced', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(requestBody)
                 });
-                
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                
+
                 const data = await response.json();
-                
-                // Store conversation ID for future messages
+
                 if (data.conversationId) {
                     conversationId = data.conversationId;
+                    localStorage.setItem('dental_chat_conversation_id', conversationId);
                 }
-                
-                // Check if questionnaire is complete
-                if (data.questionnaireComplete) {
-                    console.log('✅ Questionnaire completed!', data.patientInfo);
-                    // Could show a success message or confirmation here
-                }
-                
+
                 if (data.error) {
                     throw new Error(data.error);
                 }
-                
+
+                // Show GDPR consent prompt when the AI has collected all required info
+                if (data.requiresConsent && data.consentText) {
+                    setTimeout(() => addConsentPrompt(data.consentText), 300);
+                }
+
                 return data.response;
-                
             } catch (error) {
                 console.error('Error calling AI:', error);
                 throw error;
             }
+        }
+
+        async function sendConsentResponse(consented) {
+            const consentPanel = document.getElementById('consentPrompt');
+            if (consentPanel) consentPanel.remove();
+
+            try {
+                const response = await fetch('/.netlify/functions/ai-chat-enhanced', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ conversationId, gdprConsented: consented })
+                });
+
+                const data = await response.json();
+
+                if (data.conversationId) {
+                    conversationId = data.conversationId;
+                    localStorage.setItem('dental_chat_conversation_id', conversationId);
+                }
+
+                if (data.response) {
+                    addMessage('ai', data.response);
+                }
+
+                // Clear stored conversation once the questionnaire is fully complete
+                if (data.consentAccepted) {
+                    localStorage.removeItem('dental_chat_conversation_id');
+                    conversationId = null;
+                }
+            } catch (error) {
+                console.error('Error sending consent response:', error);
+            }
+        }
+
+        function addConsentPrompt(text) {
+            // Remove any existing prompt first
+            const existing = document.getElementById('consentPrompt');
+            if (existing) existing.remove();
+
+            const promptDiv = document.createElement('div');
+            promptDiv.id = 'consentPrompt';
+            promptDiv.className = 'message ai-message consent-prompt';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+
+            const textP = document.createElement('p');
+            textP.className = 'consent-text';
+            textP.textContent = text;
+
+            const buttons = document.createElement('div');
+            buttons.className = 'consent-buttons';
+
+            const agreeBtn = document.createElement('button');
+            agreeBtn.className = 'consent-btn consent-agree';
+            agreeBtn.textContent = '✓ I Agree';
+            agreeBtn.onclick = () => sendConsentResponse(true);
+
+            const declineBtn = document.createElement('button');
+            declineBtn.className = 'consent-btn consent-decline';
+            declineBtn.textContent = '✗ Decline';
+            declineBtn.onclick = () => sendConsentResponse(false);
+
+            buttons.appendChild(agreeBtn);
+            buttons.appendChild(declineBtn);
+            content.appendChild(textP);
+            content.appendChild(buttons);
+            promptDiv.appendChild(avatar);
+            promptDiv.appendChild(content);
+
+            chatMessages.appendChild(promptDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
     }
 

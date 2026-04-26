@@ -43,3 +43,6 @@ coverage/
 # Temporary folders
 tmp/
 temp/
+
+# Decrypted patient chat exports (PII/PHI)
+docs/exports/decrypted-conversations-*.md
