@@ -69,6 +69,16 @@ exports.handler = async (event, context) => {
             };
         }
 
+        // Validate UUID format before hitting the database
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        if (!uuidRegex.test(conversationId)) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: 'Invalid conversationId format' })
+            };
+        }
+
         if (!file || !filename) {
             return {
                 statusCode: 400,
@@ -104,8 +114,21 @@ exports.handler = async (event, context) => {
 
         console.log('📤 Processing file upload:', filename, fileType, `${(fileSize / 1024).toFixed(2)}KB`);
 
-        // Get conversation and patient info
-        const conversation = await getConversation(conversationId);
+        // Verify the conversation exists before doing any further work
+        let conversation;
+        try {
+            conversation = await getConversation(conversationId);
+        } catch (err) {
+            if (err.code === 'PGRST116') {
+                return {
+                    statusCode: 404,
+                    headers,
+                    body: JSON.stringify({ error: 'Conversation not found' })
+                };
+            }
+            throw err;
+        }
+
         let patientInfo = await getPatientInfo(conversationId);
 
         // If no patient info yet, use generic info

@@ -42,6 +42,21 @@ exports.handler = async (event, context) => {
             };
         }
 
+        // Verify Telegram webhook secret token (set TELEGRAM_WEBHOOK_SECRET and re-register
+        // the webhook with setup-webhook.sh to enable this check)
+        const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
+        if (webhookSecret) {
+            const receivedSecret = event.headers['x-telegram-bot-api-secret-token'];
+            if (!receivedSecret || receivedSecret !== webhookSecret) {
+                console.warn('Telegram webhook secret mismatch — possible spoofed request');
+                return {
+                    statusCode: 403,
+                    headers,
+                    body: JSON.stringify({ error: 'Forbidden' })
+                };
+            }
+        }
+
         const update = JSON.parse(event.body);
 
         // Handle callback query (button click)

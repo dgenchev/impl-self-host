@@ -44,10 +44,21 @@ echo ""
 echo "🔗 Webhook URL: $WEBHOOK_URL"
 echo ""
 
+# Get webhook secret (enables Telegram signature verification in telegram-webhook.js)
+echo ""
+echo "📝 Enter TELEGRAM_WEBHOOK_SECRET (recommended — must match Netlify env var):"
+echo "   Press Enter to skip (less secure)"
+read -p "Webhook Secret: " WEBHOOK_SECRET_INPUT
+
 # Set webhook
 echo "📤 Setting webhook..."
+CURL_DATA="url=${WEBHOOK_URL}"
+if [ -n "$WEBHOOK_SECRET_INPUT" ]; then
+    CURL_DATA="${CURL_DATA}&secret_token=${WEBHOOK_SECRET_INPUT}"
+    echo "🔒 Registering with secret token verification enabled"
+fi
 RESPONSE=$(curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/setWebhook" \
-  -d "url=${WEBHOOK_URL}")
+  -d "$CURL_DATA")
 
 # Check response
 if echo "$RESPONSE" | grep -q '"ok":true'; then

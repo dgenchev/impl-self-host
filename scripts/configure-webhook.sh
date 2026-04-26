@@ -72,10 +72,19 @@ fi
 echo ""
 echo "📤 Setting webhook..."
 
+# Build JSON payload — include secret_token if TELEGRAM_WEBHOOK_SECRET is set
+if [ -n "$TELEGRAM_WEBHOOK_SECRET" ]; then
+    PAYLOAD="{\"url\":\"${WEBHOOK_URL}\",\"secret_token\":\"${TELEGRAM_WEBHOOK_SECRET}\"}"
+    echo "🔒 Registering with secret token verification enabled"
+else
+    PAYLOAD="{\"url\":\"${WEBHOOK_URL}\"}"
+    echo "⚠️  TELEGRAM_WEBHOOK_SECRET not set — registering without signature verification"
+fi
+
 # Set webhook via Telegram API
 RESPONSE=$(curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
   -H "Content-Type: application/json" \
-  -d "{\"url\":\"${WEBHOOK_URL}\"}")
+  -d "$PAYLOAD")
 
 # Check if successful
 if echo "$RESPONSE" | grep -q '"ok":true'; then

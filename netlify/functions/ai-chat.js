@@ -1,4 +1,10 @@
 const axios = require('axios');
+const { z } = require('zod');
+const { sanitizeInput } = require('../../lib/gdpr-utils');
+
+const RequestSchema = z.object({
+    message: z.string().min(1).max(2000)
+});
 
 exports.handler = async function(event, context) {
     // Only allow POST requests
@@ -10,15 +16,18 @@ exports.handler = async function(event, context) {
     }
 
     try {
-        // Parse the request body
-        const { message } = JSON.parse(event.body);
-
-        if (!message) {
+        // Parse and validate request body
+        let parsed;
+        try {
+            parsed = RequestSchema.parse(JSON.parse(event.body));
+        } catch (err) {
             return {
                 statusCode: 400,
-                body: JSON.stringify({ error: 'Message is required' })
+                body: JSON.stringify({ error: 'Invalid request: message must be 1–2000 characters' })
             };
         }
+
+        const message = sanitizeInput(parsed.message);
 
         // Get OpenAI API key from environment variables
         const openaiApiKey = process.env.OPENAI_API_KEY;
@@ -56,7 +65,7 @@ Important: Always mention that for specific cases, patients should schedule a co
 
         // Call OpenAI API
         const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-4o-mini',
             messages: [
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: message }
